@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Video Info</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+
+<body>
+  <h3>💖 VIDEO INFO</h3>
+  <div>
+    <div>
+      <div>
+        <form action="">
+          <div>
+            <label for=""></label>
+            <input type="file" accept="video/*" name="" id="" placeholder="select any video file">
+          </div>
+          <button type="submit">Get Info</button>
+        </form>
+      </div>
+      <h5 id="duration"></h5>
+    </div>
+  </div>
+  <script>
+    const electron = require('electron');
+    const { ipcRenderer } = electron;
+
+    document.querySelector('button').addEventListener('click', (e) => {
+      e.preventDefault();
+      const { path } = document.querySelector('input').files[0];
+
+      ipcRenderer.send('videoSubmit', path);
+    });
+
+    ipcRenderer.on('video:duration', (event, duration) => {
+      const minutes = Math.floor(duration / 60);
+      document.querySelector('#duration').innerHTML = `video length is: ${minutes} minutes and ${duration - minutes * 60} seconds.`
+    });
+  </script>
+</body>
+
+</html>
